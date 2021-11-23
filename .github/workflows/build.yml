@@ -31,7 +31,7 @@ jobs:
       run: make
       working-directory: "./"
 
-  - uses: actions/upload-artifact@v2
-    with:
-      name: execsnoop.bin
-      path: ./execsnoop.bin
+    - uses: actions/upload-artifact@v2
+      with:
+        name: execsnoop.bin
+        path: ./execsnoop.bin
