@@ -20,7 +20,7 @@ func lateral_movement_telnet_network_activity_internal() error {
 			select {
 			case event := <-s.Source:
 				args_concat := event.Cmd + " " + strings.Join(event.Args, " ")
-				if strings.Contains(args_concat, "telnet") || strings.Contains(args_concat, "nc") ||
+				if strings.Contains(args_concat, "telnet") ||
 					strings.Contains(args_concat, "netcat") || strings.Contains(args_concat, "hping") ||
 					strings.Contains(args_concat, "netcat.openbsd") || strings.Contains(args_concat, "nc.openbsd") ||
 					strings.Contains(args_concat, "netcat.traditional") || strings.Contains(args_concat, "nping") {
