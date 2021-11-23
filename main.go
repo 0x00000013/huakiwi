@@ -24,20 +24,13 @@ import (
 	"golang.org/x/sys/unix"
 
 	"github.com/mosajjal/ebpf-edr/ebpf"
-	"github.com/mosajjal/ebpf-edr/rules"
+	_ "github.com/mosajjal/ebpf-edr/rules"
+	"github.com/mosajjal/ebpf-edr/types"
 )
 
 // $BPF_CLANG and $BPF_CFLAGS are set by the Makefile.
 
 const mapKey uint32 = 0
-
-type Stream struct {
-	Pid  uint32            `json:"pid"`
-	Gid  uint32            `json:"gid"`
-	Cmd  string            `json:"cmd"`
-	Args []string          `json:"args"`
-	Env  map[string]string `json:"env"`
-}
 
 func execsnoopTrace(stopper chan os.Signal) {
 	// Name of the kernel function to trace.
@@ -137,7 +130,7 @@ func uretProbe(stopper chan os.Signal) {
 
 }
 
-func eventExecv(stopper chan os.Signal, events chan Stream) {
+func eventExecv(stopper chan os.Signal, events chan types.EventStream) {
 	// Name of the kernel function to trace.
 	fn := "sys_enter_execve"
 
@@ -176,7 +169,7 @@ func eventExecv(stopper chan os.Signal, events chan Stream) {
 	var event Event
 
 	for {
-		var output Stream
+		var output types.EventStream
 		output.Env = make(map[string]string)
 
 		record, err := rd.Read()
@@ -227,29 +220,28 @@ func eventExecv(stopper chan os.Signal, events chan Stream) {
 		output.Cmd = string(unix.ByteSliceToString(event.Cmd[:]))
 
 		events <- output
-		log.Println("hi")
 
 	}
-
 }
 
 func main() {
 	// Subscribe to signals for terminating the program.
-	stopper := make(chan os.Signal, 1)
-	signal.Notify(stopper, os.Interrupt, syscall.SIGTERM)
+	signal.Notify(types.GlobalQuit, os.Interrupt, syscall.SIGTERM)
 	log.Println("Waiting for events..")
 
-	events := make(chan Stream)
-	go eventExecv(stopper, events)
+	events := make(chan types.EventStream)
+	go eventExecv(types.GlobalQuit, events)
 
-	var ew rules.EarthWorm
+	// todo: transform the events to have group name and username as well as the IDs by grabbing the groups and users periodically
 
 	for {
 		select {
 		case event := <-events:
-			ew.Add(event)
-			log.Printf("%#v\n", event)
-		case <-stopper:
+			for i := 0; i < len(types.GlobalEventSubsribers); i++ {
+				types.GlobalEventSubsribers[i].Source <- event
+			}
+
+		case <-types.GlobalQuit:
 			log.Println("Received SIGTERM, exiting..")
 			return
 		}
