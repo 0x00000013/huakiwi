@@ -23,7 +23,7 @@ jobs:
       run: sudo apt install -y clang-11 --install-suggests
 
     - name: llvm-strip symlink
-      run: ln -s /usr/bin/llvm-strip-11 /usr/bin/llvm-strip
+      run: sudo ln -s /usr/bin/llvm-strip-11 /usr/bin/llvm-strip
 
     - name: Get dependencies
       run:  go get -v 
