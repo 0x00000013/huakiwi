@@ -20,7 +20,7 @@ jobs:
       uses: actions/checkout@v2
 
     - name: Install Clang
-      run: sudo apt install -y clang-11 llvm-toolchain --install-suggests
+      run: sudo apt install -y clang-11 --install-suggests
 
     - name: llvm-strip symlink
       run: ln -s /usr/bin/llvm-strip-11 /usr/bin/llvm-strip
