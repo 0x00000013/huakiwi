@@ -1,0 +1,27 @@
+title: Modification of Dynamic Linker Preload Shared Object
+# id: generate one here https://www.uuidgenerator.net/version4
+status: experimental
+description: |
+  Identifies modification of the dynamic linker preload shared object (ld.so.preload). Adversaries may execute malicious
+  payloads by hijacking the dynamic linker used to load libraries.
+# references:
+#     - A list of all references that can help a reader or analyst understand the meaning of a triggered rule
+tags:
+    - attack.T1574
+    - attack.T1574.006
+    - attack.TA0004
+author: Ali Mosajjal
+date: 2022/04/04  # Rule date
+logsource:
+    category: eventstream
+detection:
+    arguments:
+      - args:
+        - "/etc/ld.so.preload"
+    condition: all of arguments
+fields:
+    - fields in the log source that are important to investigate further
+falsepositives:
+    - |
+      potential use by a background service
+level: medium

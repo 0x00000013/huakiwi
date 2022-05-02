@@ -1,0 +1,32 @@
+title: File Permission Modification in Writable Directory
+# id: generate one here https://www.uuidgenerator.net/version4
+status: experimental
+description: |
+    Identifies file permission modifications in common writable directories by a non-root user. Adversaries often drop files
+    or payloads into a writable directory and change permissions prior to execution.
+# references:
+#     - A list of all references that can help a reader or analyst understand the meaning of a triggered rule
+tags:
+    - attack.T1222
+    - attack.TA0005
+author: Ali Mosajjal
+date: 2022/04/04  # Rule date
+logsource:
+    category: eventstream
+detection:
+    command:
+      - cmd:
+        - "chown"
+        - "chattr"
+        - "chgrp"
+    directories:
+      - pwd:
+        - "/tmp"
+        - "/var/tmp"
+        - "/dev/shm"
+    condition: 1 of command and 1 of directories
+fields:
+    - fields in the log source that are important to investigate further
+falsepositives:
+    -  Certain programs or applications may modify files or change ownership in writable directories. These can be exempted by username.
+level: medium

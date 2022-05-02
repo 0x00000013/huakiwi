@@ -1,0 +1,40 @@
+title: Kernel Module Removal
+# id: generate one here https://www.uuidgenerator.net/version4
+status: experimental
+description: |
+  Kernel modules are pieces of code that can be loaded and unloaded into the kernel upon demand. They extend the
+  functionality of the kernel without the need to reboot the system. This rule identifies attempts to remove a kernel
+  module.
+# references:
+#     - A list of all references that can help a reader or analyst understand the meaning of a triggered rule
+tags:
+    - attack.TA0003
+    - attack.TA0005
+    - attack.T1547
+    - attack.T1547.006
+    - attack.T1562
+    - attack.T1562.001
+author: Ali Mosajjal
+date: 2022/04/04  # Rule date
+logsource:
+    category: eventstream
+detection:
+    command1:
+      - cmd:
+        - "rmmod"
+    command2:
+      - cmd:
+        - "modprobe"
+    command2_args:
+      - args:
+        - "--remove"
+        - "-r"
+    condition: all of command1 or (all of command2 and 1 of command2_args)
+    # condition: all of command1
+fields:
+    - fields in the log source that are important to investigate further
+falsepositives: 
+  - >
+     There is usually no reason to remove modules, but some buggy modules require it. These can be exempted by username.
+     Note that some Linux distributions are not built to support the removal of modules at all.
+level: medium

@@ -1,0 +1,39 @@
+title: System Log File Deletion
+# id: generate one here https://www.uuidgenerator.net/version4
+status: experimental
+description: |
+  Identifies the deletion of sensitive Linux system logs. This may indicate an attempt to evade detection or destroy
+  forensic evidence on a system.
+# references:
+#     - A list of all references that can help a reader or analyst understand the meaning of a triggered rule
+tags:
+    - attack.T1070
+    - attack.TA0005
+author: Ali Mosajjal
+date: 2022/04/04  # Rule date
+logsource:
+    category: eventstream
+detection:
+    command:
+      - cmd:
+        - "unlink"
+        - "rm"
+        - "shred"
+    arguments:
+      - args:
+        - /var/run/utmp
+        - /var/log/wtmp
+        - /var/log/btmp
+        - /var/log/lastlog
+        - /var/log/faillog
+        - /var/log/syslog
+        - /var/log/messages
+        - /var/log/secure
+        - /var/log/auth.log
+    condition: 1 of command and 1 of arguments
+fields:
+    - fields in the log source that are important to investigate further
+falsepositives: 
+  - >
+     none
+level: medium

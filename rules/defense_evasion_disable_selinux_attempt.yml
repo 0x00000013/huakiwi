@@ -1,0 +1,30 @@
+title: Potential Disabling of SELinux
+# id: generate one here https://www.uuidgenerator.net/version4
+status: experimental
+description: |
+    Identifies potential attempts to disable Security-Enhanced Linux (SELinux), which is a Linux kernel security feature to
+    support access control policies. Adversaries may disable security tools to avoid possible detection of their tools and activities.
+# references:
+#     - A list of all references that can help a reader or analyst understand the meaning of a triggered rule
+tags:
+    - attack.T1562
+    - attack.T1562.001
+    - attack.TA0005
+author: Ali Mosajjal
+date: 2022/04/04  # Rule date
+logsource:
+    category: eventstream
+detection:
+    command:
+      - cmd:
+        - "setenforce"
+    arguments:
+      - args:
+        - "0"
+
+    condition: all of command and 1 of arguments
+fields:
+    - fields in the log source that are important to investigate further
+falsepositives:
+    - none
+level: medium

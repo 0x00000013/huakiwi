@@ -1,0 +1,27 @@
+
+title: Use of iodine DNS tunnel
+# id: generate one here https://www.uuidgenerator.net/version4
+status: experimental
+description: |
+  Identifies potential use of iodine DNS tunnel
+# references:
+#     - A list of all references that can help a reader or analyst understand the meaning of a triggered rule
+tags:
+    - attack.T1059
+    - attack.TA0002
+author: Ali Mosajjal
+date: 2022/04/04  # Rule date
+logsource:
+    category: eventstream
+detection:
+    commands:
+      cmd:
+        - "iodine"
+        - "iodined"
+    condition: 1 of commands
+fields:
+    - fields in the log source that are important to investigate further
+falsepositives:
+    - |
+      should not be very noisy
+level: low

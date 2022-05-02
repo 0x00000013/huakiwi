@@ -1,0 +1,26 @@
+title: Potential Protocol Tunneling via EarthWorm
+# id: generate one here https://www.uuidgenerator.net/version4
+status: experimental
+description: Identifies the execution of the EarthWorm tunneler. Adversaries may tunnel network communications to and from a victim
+references:
+    - "http://rootkiter.com/EarthWorm/"
+    - https://decoded.avast.io/luigicamastra/apt-group-targeting-governmental-agencies-in-east-asia/"
+tags:
+    - attack.T1572
+    - attack.TA0011
+author: Ali Mosajjal
+date: 2022/04/04  # Rule date
+logsource:
+    category: eventstream
+detection:
+    command:
+      - cmd: rssocks
+      - args:
+         -s
+         -d
+    condition: command
+fields:
+    - fields in the log source that are important to investigate further
+falsepositives:
+    - describe possible false positive conditions to help the analysts in their investigation
+level: medium

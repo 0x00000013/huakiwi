@@ -11,12 +11,13 @@ import (
 	"bytes"
 	"encoding/binary"
 	"errors"
-	"log"
 	"os"
 	"os/signal"
 	"strings"
 	"syscall"
 	"time"
+
+	log "github.com/sirupsen/logrus"
 
 	"github.com/cilium/ebpf/link"
 	"github.com/cilium/ebpf/perf"
@@ -24,7 +25,6 @@ import (
 	"golang.org/x/sys/unix"
 
 	"github.com/mosajjal/ebpf-edr/ebpf"
-	_ "github.com/mosajjal/ebpf-edr/rules"
 	"github.com/mosajjal/ebpf-edr/types"
 )
 
@@ -72,75 +72,11 @@ func execsnoopTrace(stopper chan os.Signal) {
 			return
 		}
 	}
-
-}
-
-func uretProbe(stopper chan os.Signal) {
-	// Name of the kernel function to trace.
-	fn := "readline"
-
-	type Event struct {
-		Pid  uint32
-		Gid  uint32
-		Line [80]byte
-	}
-
-	// Allow the current process to lock memory for eBPF resources.
-	if err := rlimit.RemoveMemlock(); err != nil {
-		log.Fatal(err)
-	}
-
-	// Load pre-compiled programs and maps into the kernel.
-	objs := ebpf.CreateEmptyObject()
-	if err := ebpf.LoadObjects(&objs, nil); err != nil {
-		log.Fatalf("loading objects: %v", err)
-	}
-	defer objs.Close()
-	ex, _ := link.OpenExecutable("/usr/lib/libreadline.so.8")
-
-	up, _ := ex.Uretprobe(fn, objs.UretprobeBashReadline, nil)
-	defer up.Close()
-
-	rd, _ := perf.NewReader(objs.Events, os.Getpagesize())
-	defer rd.Close()
-	var event Event
-	for {
-		record, err := rd.Read()
-		if err != nil {
-			if errors.Is(err, perf.ErrClosed) {
-				return
-			}
-			log.Printf("reading from perf event reader: %s", err)
-			continue
-		}
-
-		if record.LostSamples != 0 {
-			log.Printf("perf event ring buffer full, dropped %d samples", record.LostSamples)
-			continue
-		}
-
-		// Parse the perf event entry into an Event structure.
-		if err := binary.Read(bytes.NewBuffer(record.RawSample), binary.LittleEndian, &event); err != nil {
-			log.Printf("parsing perf event: %s", err)
-			continue
-		}
-
-		log.Printf("pid: %d, gid: %d, eturn value: %s", event.Pid, event.Gid, unix.ByteSliceToString(event.Line[:]))
-	}
-
 }
 
 func eventExecv(stopper chan os.Signal, events chan types.EventStream) {
 	// Name of the kernel function to trace.
 	fn := "sys_enter_execve"
-
-	type Event struct {
-		Pid    uint32
-		Gid    uint32
-		ArgLen uint32
-		EnvLen uint32
-		Cmd    [80]byte
-	}
 
 	// Allow the current process to lock memory for eBPF resources.
 	if err := rlimit.RemoveMemlock(); err != nil {
@@ -166,7 +102,7 @@ func eventExecv(stopper chan os.Signal, events chan types.EventStream) {
 
 	rd, _ := perf.NewReader(objs.Events, os.Getpagesize())
 	defer rd.Close()
-	var event Event
+	var event types.Event
 
 	for {
 		var output types.EventStream
@@ -233,18 +169,24 @@ func main() {
 	go eventExecv(types.GlobalQuit, events)
 
 	// todo: transform the events to have group name and username as well as the IDs by grabbing the groups and users periodically
+	sigmaInsert()
 
 	for {
 		select {
 		case event := <-events:
-			for i := 0; i < len(types.GlobalEventSubsribers); i++ {
-				types.GlobalEventSubsribers[i].Source <- event
+			results, match := RuleSet.EvalAll(event)
+			if match {
+				log.Printf("%+v", results)
+				log.Printf("%+v", event)
 			}
+			// for i := 0; i < len(types.GlobalEventSubsribers); i++ {
+			// types.GlobalEventSubsribers[i].Source <- event
+
+			// }
 
 		case <-types.GlobalQuit:
 			log.Println("Received SIGTERM, exiting..")
 			return
 		}
 	}
-
 }

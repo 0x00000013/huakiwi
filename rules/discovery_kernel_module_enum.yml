@@ -1,0 +1,35 @@
+title: Enumeration of Kernel Modules
+# id: generate one here https://www.uuidgenerator.net/version4
+status: experimental
+description: |
+    Loadable Kernel Modules (or LKMs) are pieces of code that can be loaded and unloaded into the kernel upon demand. They
+    extend the functionality of the kernel without the need to reboot the system. This identifies attempts to enumerate
+    information about a kernel module.
+# references:
+#     - A list of all references that can help a reader or analyst understand the meaning of a triggered rule
+tags:
+    - attack.TA0007
+    - attack.T1082
+author: Ali Mosajjal
+date: 2022/04/04  # Rule date
+logsource:
+    category: eventstream
+detection:
+    command1: 
+      - cmd: kmod
+    command1_args:
+      - args:
+        - "list"
+    command2:
+      - cmd:
+        - depmod
+        - lsmod
+        - modinfo
+    condition: 1 of command2 or (all of command1 and all of command1_args)
+fields:
+    - fields in the log source that are important to investigate further
+falsepositives:
+    - |
+        Security tools and device drivers may run these programs in order to enumerate kernel modules. Use of these programs
+        by ordinary users is uncommon. These can be exempted by process name or username.
+level: medium

@@ -1,0 +1,33 @@
+
+title: Use of raw networking tools
+# id: generate one here https://www.uuidgenerator.net/version4
+status: experimental
+description: |
+  Identifies potential lateral movement or port scanning using common network tools 
+# references:
+#     - A list of all references that can help a reader or analyst understand the meaning of a triggered rule
+tags:
+    - attack.T1059
+    - attack.TA0002
+author: Ali Mosajjal
+date: 2022/04/04  # Rule date
+logsource:
+    category: eventstream
+detection:
+    commands:
+      cmd:
+        - "telnet"
+        - "netcat"
+        - "netcat.openbsd"
+        - "hping"
+        - "nping"
+        - "nc.openbsd"
+        - "netcat.traditional"
+    condition: 1 of commands
+fields:
+    - fields in the log source that are important to investigate further
+falsepositives:
+    - |
+      users making use of the tool to troubleshoot networking issues or conducting tests
+level: low
+

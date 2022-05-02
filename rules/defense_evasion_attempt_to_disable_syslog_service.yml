@@ -1,0 +1,43 @@
+title: Attempt to Disable Logging
+# id: generate one here https://www.uuidgenerator.net/version4
+status: experimental
+description: |
+  Adversaries may attempt to disable the syslog service in an attempt to an attempt to disrupt event logging and evade
+  detection by security controls.
+# references:
+#     - A list of all references that can help a reader or analyst understand the meaning of a triggered rule
+tags:
+    - attack.TA0005
+    - attack.T1562.001
+    - attack.T1562
+author: Ali Mosajjal
+date: 2022/04/04  # Rule date
+logsource:
+    category: eventstream
+detection:
+    service_controllers: 
+      - cmd:
+        - "systemctl"
+        - "chkconfig"
+        - "service"
+    actions:
+      - args:
+        - "kill"
+        - "stop"
+        - "disable"
+        - "off"
+    services:
+      - args:
+        - "rsyslog"
+        - "syslog-ng"
+        - "syslog"
+        - "auditd"
+        - "systemd-journald" 
+    condition: 1 of service_controllers and 1 of actions and 1 of services
+fields:
+    - fields in the log source that are important to investigate further
+falsepositives:
+    - |
+        Security tools and device drivers may run these programs in order to enumerate kernel modules. Use of these programs
+        by ordinary users is uncommon. These can be exempted by process name or username.
+level: medium

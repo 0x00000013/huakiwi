@@ -1,0 +1,32 @@
+title: System Information Discovery
+# id: generate one here https://www.uuidgenerator.net/version4
+status: experimental
+description: |
+  An adversary may attempt to get detailed information about the operating system and hardware. This rule identifies
+  common locations used to discover virtual machine hardware by a non-root user. This technique has been used by the Pupy
+  RAT and other malware.
+# references:
+#     - A list of all references that can help a reader or analyst understand the meaning of a triggered rule
+tags:
+    - attack.TA0007
+    - attack.T1082
+author: Ali Mosajjal
+date: 2022/04/04  # Rule date
+logsource:
+    category: eventstream
+detection:
+    arguments:
+      - args:
+        - "/sys/class/dmi/id/bios_version"
+        - "/sys/class/dmi/id/product_name"
+        - "/sys/class/dmi/id/chassis_vendor"
+        - "/proc/scsi/scsi"
+        - "/proc/ide/hd0/model"
+    condition: 1 of arguments
+fields:
+    - fields in the log source that are important to investigate further
+falsepositives:
+    - |
+      Certain tools or automated software may enumerate hardware information. These tools can be exempted via user name or
+      process arguments to eliminate potential noise.
+level: medium

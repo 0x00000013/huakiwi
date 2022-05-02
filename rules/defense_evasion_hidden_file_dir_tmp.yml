@@ -1,0 +1,36 @@
+title: Creation of Hidden Files and Directories
+# id: generate one here https://www.uuidgenerator.net/version4
+status: experimental
+description: |
+  Users can mark specific files as hidden simply by putting a "." as the first character in the file or folder name.
+  Adversaries can use this to their advantage to hide files and folders on the system for persistence and defense evasion.
+  This rule looks for hidden files or folders in common writable directories.
+# references:
+#     - A list of all references that can help a reader or analyst understand the meaning of a triggered rule
+tags:
+    - attack.TA0003
+    - attack.TA0005
+    - attack.T1564
+    - attack.T1564.001
+author: Ali Mosajjal
+date: 2022/04/04  # Rule date
+logsource:
+    category: eventstream
+detection:
+    commands:
+      - cmd:
+        - "touch"
+        - "mkdir"
+    directories:
+      - pwd:
+        - "/tmp"
+        - "/var/tmp"
+        - "/dev/shm"
+    condition: 1 of commands and 1 of directories
+fields:
+    - fields in the log source that are important to investigate further
+falsepositives: 
+  - >
+    Certain tools may create hidden temporary files or directories upon installation or as part of their normal behavior. 
+    These events can be filtered by the process arguments, username, or process name values.
+level: medium

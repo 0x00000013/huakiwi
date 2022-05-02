@@ -1,0 +1,29 @@
+title: Base16 or Base32 Encoding/Decoding Activity
+# id: generate one here https://www.uuidgenerator.net/version4
+status: experimental
+description: |
+  Adversaries may encode/decode data in an attempt to evade detection by host- or network-based security controls.
+# references:
+#     - A list of all references that can help a reader or analyst understand the meaning of a triggered rule
+tags:
+    - attack.T1027
+    - attack.TA0005
+    - attack.T1140
+author: Ali Mosajjal
+date: 2022/04/04  # Rule date
+logsource:
+    category: eventstream
+detection:
+    processes:
+      - cmd:
+        - "base16"
+        - "base32"
+        - "base32plain"
+        - "base32hex"
+    condition: 1 of processes
+fields:
+    - fields in the log source that are important to investigate further
+falsepositives:
+    - |
+        Automated tools such as Jenkins may encode or decode files as part of their normal behavior. These events can be filtered by the process executable or username values
+level: medium

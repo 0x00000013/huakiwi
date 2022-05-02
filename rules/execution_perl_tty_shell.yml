@@ -1,0 +1,31 @@
+title: Interactive Terminal Spawned via Perl
+# id: generate one here https://www.uuidgenerator.net/version4
+status: experimental
+description: |
+  Identifies when a terminal (tty) is spawned via Perl. Attackers may upgrade a simple reverse shell to a fully
+  interactive tty after obtaining initial access to a host.
+# references:
+#     - A list of all references that can help a reader or analyst understand the meaning of a triggered rule
+tags:
+    - attack.T1059
+    - attack.TA0002
+author: Ali Mosajjal
+date: 2022/04/04  # Rule date
+logsource:
+    category: eventstream
+detection:
+    command:
+      cmd:
+        - perl
+    arguments:
+      - args:
+        - "/bin/bash"
+        - "/bin/sh"
+        - "/bin/dash"
+    condition: all of command and 1 of arguments
+fields:
+    - fields in the log source that are important to investigate further
+falsepositives:
+    - |
+      none
+level: medium

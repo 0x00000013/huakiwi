@@ -1,0 +1,46 @@
+
+title: Tampering of Bash Command-Line History
+# id: generate one here https://www.uuidgenerator.net/version4
+status: experimental
+description: Adversaries may attempt to clear or disable the Bash command-line history in an attempt to evade detection or forensic investigations.
+# references:
+#     - A list of all references that can help a reader or analyst understand the meaning of a triggered rule
+tags:
+    - attack.T1070
+    - attack.T1070.003
+    - attack.TA0005
+author: Ali Mosajjal
+date: 2022/04/04  # Rule date
+logsource:
+    category: eventstream
+detection:
+    command1: 
+      - args:
+        - bash_history
+    command2: 
+      - args:
+        - "history -c"
+    command3: 
+      - args:
+        - "export"
+        - "HISTFILE"
+    command4: 
+      - args:
+        - "unset"
+        - "HISTFILE"
+    command5: 
+      - args:
+        - "export"
+        - "HISTFILESIZE"
+    command6: 
+      - args:
+        - "set"
+        - "history +o"
+    condition: all of command1 or all of command2 or all of command3 or all of command4 or all of command5 or all of command6
+fields:
+    - fields in the log source that are important to investigate further
+falsepositives:
+    - |
+        Security tools and device drivers may run these programs in order to enumerate kernel modules. Use of these programs
+        by ordinary users is uncommon. These can be exempted by process name or username.
+level: medium
