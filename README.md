@@ -1,10 +1,23 @@
-# ebpf-edr
-A proof-of-concept eBPF-based EDR for Linux
+# Huakiwi
+Huwkiwi is an EDR powered by eBPF and Sigma. 
 
-Seems to be working fine with the 20 basic rules implemented. Logs the alerts to stdout at the moment. 
+# Name
+
+Huakiwi is named after (Leioproctus huakiwi)[https://en.wikipedia.org/wiki/Leioproctus_huakiwi], a species of bee Endemic to New Zealand. 
+
+# Requirements
+- kernel 4.4+ [go-ebf requirement](https://github.com/cilium/ebpf#requirements)
+- LLVM/Clang
+
 
 # Build
-Simple run `make` after cloning the repo. it should generate a portable statically-linked binary. Needs kernel 4.4+ to run
+Simply run `make` after cloning the repo. it should generate a portable statically-linked binary. 
+
+```sh
+git clone https://github.com/bm9w/huakiwi
+cd huakiwi
+make
+```
 
 
 # Rules
@@ -25,5 +38,4 @@ current rules (almost all of them are borrowed from Elastic's public repo on SIE
  - Interactive Terminal Spawned via Python
  - Modification of Dynamic Linker Preload Shared Object
 
-and some more.
-
+Contributions welcome! 
