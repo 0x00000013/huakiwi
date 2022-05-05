@@ -8,6 +8,7 @@ Huakiwi is named after (Leioproctus huakiwi)[https://en.wikipedia.org/wiki/Leiop
 <p align="center">
   <img width="460" height="300" src="static/bee-transparent.png">
 </p>
+credit: [hasherezade](https://github.com/hasherezade/drawings)
 
 # Requirements
 - kernel 4.4+ [go-ebf requirement](https://github.com/cilium/ebpf#requirements)
