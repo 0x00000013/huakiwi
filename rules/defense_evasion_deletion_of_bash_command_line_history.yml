@@ -32,9 +32,8 @@ detection:
       - args|contains:
         - "export"
         - "HISTFILESIZE"
-    command6: 
+    command6:
       - args|contains:
-        - "set"
         - "history +o"
     condition: all of command1 or all of command2 or all of command3 or all of command4 or all of command5 or all of command6
 fields:

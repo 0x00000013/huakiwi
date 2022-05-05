@@ -54,7 +54,7 @@ func (e EventStream) Select(s string) (any, bool) {
 	case "cmd":
 		return e.Cmd + " " + e.Args[0], true
 	case "args":
-		return strings.Join(e.Args[1:], " "), true
+		return strings.Join(e.Args[:], " "), true
 	case "env":
 		return e.Env, true
 	case "pwd":

@@ -5,6 +5,10 @@ Huwkiwi is an EDR powered by eBPF and Sigma.
 
 Huakiwi is named after (Leioproctus huakiwi)[https://en.wikipedia.org/wiki/Leioproctus_huakiwi], a species of bee Endemic to New Zealand. 
 
+<p align="center">
+  <img width="460" height="300" src="static/bee-transparent.png">
+</p>
+
 # Requirements
 - kernel 4.4+ [go-ebf requirement](https://github.com/cilium/ebpf#requirements)
 - LLVM/Clang
