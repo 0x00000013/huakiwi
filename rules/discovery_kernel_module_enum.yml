@@ -16,12 +16,12 @@ logsource:
     category: eventstream
 detection:
     command1: 
-      - cmd: kmod
+      - cmd|contains: kmod
     command1_args:
-      - args:
+      - args|contains:
         - "list"
     command2:
-      - cmd:
+      - cmd|contains:
         - depmod
         - lsmod
         - modinfo

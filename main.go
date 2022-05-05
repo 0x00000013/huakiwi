@@ -176,8 +176,8 @@ func main() {
 		case event := <-events:
 			results, match := RuleSet.EvalAll(event)
 			if match {
-				log.Printf("%+v", results)
-				log.Printf("%+v", event)
+				log.Warnf("%+v", results)
+				log.Warnf("%+v", event)
 			}
 			// for i := 0; i < len(types.GlobalEventSubsribers); i++ {
 			// types.GlobalEventSubsribers[i].Source <- event

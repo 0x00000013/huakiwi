@@ -18,11 +18,11 @@ logsource:
     category: eventstream
 detection:
     commands:
-      - cmd:
+      - cmd|contains:
         - "touch"
         - "mkdir"
     directories:
-      - pwd:
+      - pwd|contains:
         - "/tmp"
         - "/var/tmp"
         - "/dev/shm"

@@ -16,7 +16,7 @@ logsource:
     category: eventstream
 detection:
     arguments:
-      - args:
+      - args|contains:
         - "/sys/class/dmi/id/bios_version"
         - "/sys/class/dmi/id/product_name"
         - "/sys/class/dmi/id/chassis_vendor"

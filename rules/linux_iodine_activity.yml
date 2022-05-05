@@ -15,7 +15,7 @@ logsource:
     category: eventstream
 detection:
     commands:
-      cmd:
+      cmd|contains:
         - "iodine"
         - "iodined"
     condition: 1 of commands

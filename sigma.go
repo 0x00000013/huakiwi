@@ -5,7 +5,7 @@ import (
 
 	log "github.com/sirupsen/logrus"
 
-	"github.com/markuskont/go-sigma-rule-engine/pkg/sigma/v2"
+	sigma "github.com/markuskont/go-sigma-rule-engine"
 )
 
 // load all the .yara rules inside the rules/ directory and register them to the stream they subscribe to

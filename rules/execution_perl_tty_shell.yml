@@ -15,10 +15,10 @@ logsource:
     category: eventstream
 detection:
     command:
-      cmd:
+      cmd|contains:
         - perl
     arguments:
-      - args:
+      - args|contains:
         - "/bin/bash"
         - "/bin/sh"
         - "/bin/dash"

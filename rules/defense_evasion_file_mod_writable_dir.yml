@@ -15,12 +15,12 @@ logsource:
     category: eventstream
 detection:
     command:
-      - cmd:
+      - cmd|contains:
         - "chown"
         - "chattr"
         - "chgrp"
     directories:
-      - pwd:
+      - pwd|contains:
         - "/tmp"
         - "/var/tmp"
         - "/dev/shm"

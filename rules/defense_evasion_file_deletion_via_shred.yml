@@ -17,10 +17,10 @@ logsource:
     category: eventstream
 detection:
     command:
-      - cmd:
+      - cmd|contains:
         - "shred"
     arguments:
-      - args:
+      - args|contains:
         - "-u"
         - "--remove"
         - "-z"

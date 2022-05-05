@@ -15,25 +15,25 @@ logsource:
     category: eventstream
 detection:
     command1: 
-      - args:
+      - args|contains:
         - bash_history
     command2: 
-      - args:
+      - args|contains:
         - "history -c"
     command3: 
-      - args:
+      - args|contains:
         - "export"
         - "HISTFILE"
     command4: 
-      - args:
+      - args|contains:
         - "unset"
         - "HISTFILE"
     command5: 
-      - args:
+      - args|contains:
         - "export"
         - "HISTFILESIZE"
     command6: 
-      - args:
+      - args|contains:
         - "set"
         - "history +o"
     condition: all of command1 or all of command2 or all of command3 or all of command4 or all of command5 or all of command6

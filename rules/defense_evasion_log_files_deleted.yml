@@ -15,12 +15,12 @@ logsource:
     category: eventstream
 detection:
     command:
-      - cmd:
+      - cmd|contains:
         - "unlink"
         - "rm"
         - "shred"
     arguments:
-      - args:
+      - args|contains:
         - /var/run/utmp
         - /var/log/wtmp
         - /var/log/btmp

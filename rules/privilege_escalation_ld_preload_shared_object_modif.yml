@@ -16,7 +16,7 @@ logsource:
     category: eventstream
 detection:
     arguments:
-      - args:
+      - args|contains:
         - "/etc/ld.so.preload"
     condition: all of arguments
 fields:

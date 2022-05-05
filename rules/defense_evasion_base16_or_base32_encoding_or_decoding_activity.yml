@@ -15,7 +15,7 @@ logsource:
     category: eventstream
 detection:
     processes:
-      - cmd:
+      - cmd|contains:
         - "base16"
         - "base32"
         - "base32plain"

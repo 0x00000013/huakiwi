@@ -15,7 +15,7 @@ logsource:
     category: eventstream
 detection:
     commands:
-      cmd:
+      cmd|contains:
         - "telnet"
         - "netcat"
         - "netcat.openbsd"

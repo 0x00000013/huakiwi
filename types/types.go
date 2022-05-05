@@ -45,16 +45,16 @@ func (e EventStream) Keywords() ([]string, bool) {
 	return e.Args, true
 }
 
-func (e EventStream) Select(s string) (interface{}, bool) {
+func (e EventStream) Select(s string) (any, bool) {
 	switch s {
 	case "pid":
 		return e.Pid, true
 	case "gid":
 		return e.Gid, true
 	case "cmd":
-		return e.Cmd + e.Args[0], true
+		return e.Cmd + " " + e.Args[0], true
 	case "args":
-		return strings.Join(e.Args, " "), true
+		return strings.Join(e.Args[1:], " "), true
 	case "env":
 		return e.Env, true
 	case "pwd":

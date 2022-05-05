@@ -16,18 +16,18 @@ logsource:
     category: eventstream
 detection:
     service_controllers: 
-      - cmd:
+      - cmd|contains:
         - "systemctl"
         - "chkconfig"
         - "service"
     actions:
-      - args:
+      - args|contains:
         - "kill"
         - "stop"
         - "disable"
         - "off"
     services:
-      - args:
+      - args|contains:
         - "rsyslog"
         - "syslog-ng"
         - "syslog"

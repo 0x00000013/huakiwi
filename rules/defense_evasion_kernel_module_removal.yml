@@ -20,13 +20,13 @@ logsource:
     category: eventstream
 detection:
     command1:
-      - cmd:
+      - cmd|contains:
         - "rmmod"
     command2:
-      - cmd:
+      - cmd|contains:
         - "modprobe"
     command2_args:
-      - args:
+      - args|contains:
         - "--remove"
         - "-r"
     condition: all of command1 or (all of command2 and 1 of command2_args)

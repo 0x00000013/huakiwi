@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/cilium/ebpf v0.8.1
-	github.com/markuskont/go-sigma-rule-engine v0.2.4
+	github.com/markuskont/go-sigma-rule-engine v0.3.0
 	github.com/sirupsen/logrus v1.8.1
 	golang.org/x/sys v0.0.0-20220429233432-b5fbb4746d32
 )

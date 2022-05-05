@@ -14,8 +14,8 @@ logsource:
     category: eventstream
 detection:
     command:
-      - cmd: rssocks
-      - args:
+      - cmd|contains: rssocks
+      - args|contains:
          -s
          -d
     condition: command
