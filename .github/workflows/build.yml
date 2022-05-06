@@ -35,16 +35,16 @@ jobs:
 
     - uses: actions/upload-artifact@v2
       with:
-        name: execsnoop.bin
-        path: ./execsnoop.bin
+        name: huakiwi.bin
+        path: ./huakiwi.bin
 
     - name: Upload Linux binary to release
       if: startsWith(github.ref, 'refs/tags/v')
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: ./execsnoop.bin
-        asset_name: execsnoop.bin
+        file: ./huakiwi.bin
+        asset_name: huakiwi.bin
         tag: ${{ github.ref }}
         overwrite: true
         body: ""
