@@ -34,7 +34,8 @@ current rules (almost all of them are borrowed from Elastic's public repo on SIE
  - Compression of Sensitive Files 
  - Potential OpenSSH Backdoor Logging Activity
  - Attempt to Disable IPTables or Firewall
- - Attempt to Disable Syslog Service
+ - Attempt to Disable Logging
+ - Base16 or Base32 Encoding/Decoding Activity
  - Tampering of Bash Command-Line History
  - Potential Disabling of SELinux
  - File Deletion via Shred
@@ -42,6 +43,9 @@ current rules (almost all of them are borrowed from Elastic's public repo on SIE
  - System Log File Deletion
  - Interactive Terminal Spawned via Perl
  - Interactive Terminal Spawned via Python
+ - Modification of Dynamic Linker Preload Shared Object
+ - Use of raw networking tools
+ - Use of iodine DNS tunnel
  - Modification of Dynamic Linker Preload Shared Object
 
 Contributions welcome! 
