@@ -1,4 +1,4 @@
-OUTPUTFILE=execsnoop.bin
+OUTPUTFILE=huakiwi.bin
 
 # $BPF_CLANG -cflags $BPF_CFLAGS 
 
