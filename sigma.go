@@ -1,8 +1,6 @@
 package main
 
 import (
-	"embed"
-
 	log "github.com/sirupsen/logrus"
 
 	sigma "github.com/markuskont/go-sigma-rule-engine"
@@ -10,8 +8,8 @@ import (
 
 // load all the .yara rules inside the rules/ directory and register them to the stream they subscribe to
 
-//go:embed rules/*.yml
-var sigmaRules embed.FS
+// //go:embed rules/*.yml
+// var sigmaRules embed.FS
 var RuleSet *sigma.Ruleset
 
 func sigmaInsert() {

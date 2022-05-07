@@ -1,29 +1,24 @@
-package types
+package main
 
 import (
 	"encoding/json"
 	"os"
 	"strings"
+
+	sigma "github.com/markuskont/go-sigma-rule-engine"
 )
 
-type EventSubscriber struct {
-	Source chan EventStream
+var GlobalQuit = make(chan os.Signal, 1)
+
+type Alarm struct {
+	Rule  sigma.Results
+	Event EventStream
 }
 
-type EventSub interface {
-	Subscribe() error
-	run() error
+func (a Alarm) Json() string {
+	event_json, _ := json.Marshal(a)
+	return string(event_json)
 }
-
-func (e EventSubscriber) Subscribe() error {
-	GlobalEventSubsribers = append(GlobalEventSubsribers, &e)
-	return nil
-}
-
-var (
-	GlobalEventSubsribers = []*EventSubscriber{}
-	GlobalQuit            = make(chan os.Signal, 1)
-)
 
 type EventStream struct {
 	Pid  uint32            `json:"pid"`
@@ -33,7 +28,8 @@ type EventStream struct {
 	Env  map[string]string `json:"env"`
 }
 
-type Event struct {
+// inputEvent comes from eBPF
+type InputEvent struct {
 	Pid    uint32
 	Gid    uint32
 	ArgLen uint32

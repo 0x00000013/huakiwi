@@ -22,16 +22,13 @@ detection:
         - "history -c"
     command3: 
       - args|contains:
-        - "export"
-        - "HISTFILE"
+        - "export HISTFILE"
     command4: 
       - args|contains:
-        - "unset"
-        - "HISTFILE"
+        - "unset HISTFILE"
     command5: 
       - args|contains:
-        - "export"
-        - "HISTFILESIZE"
+        - "export HISTFILESIZE"
     command6:
       - args|contains:
         - "history +o"
