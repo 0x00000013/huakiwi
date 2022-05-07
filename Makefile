@@ -1,15 +1,11 @@
 OUTPUTFILE=huakiwi.bin
+GO_ENV := BPF_CLANG=clang BPF_CFLAGS=""
+SOURCES = $(wildcard *.go) $(wildcard */*.go)
 
-# $BPF_CLANG -cflags $BPF_CFLAGS 
-
-go_env := BPF_CLANG=clang BPF_CFLAGS=""
-go:
-	$(go_env) go generate ./...
-	$(go_env) go build -o $(OUTPUTFILE) .
-
-.PHONY: all
-all: go
+$(OUTPUTFILE): $(SOURCES)
+	$(GO_ENV) go generate ./...
+	$(GO_ENV) go build -o $(OUTPUTFILE) .
 
 clean:
-	rm -v -f $(OUTPUTFILE)
-	rm -v bpf_bpfe*
+	-rm $(OUTPUTFILE)
+	-find . -iname "*.o" -delete
